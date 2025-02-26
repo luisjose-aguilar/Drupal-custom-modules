@@ -1,0 +1,10 @@
+name: CKEditor Newsletter Text Container
+type: module
+description: This plugin module adds a DIV container in the CKEditor based on the newsletter template in Drupal 8
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'
+core_version_requirement: ^8 || ^9
+project: 'ckeditor_newsletter_text_container'

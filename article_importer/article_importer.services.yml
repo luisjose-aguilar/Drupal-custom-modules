@@ -1,0 +1,8 @@
+services:
+  article_importer.field_helper:
+    class: Drupal\article_importer\Service\ArticleFieldHelper
+    arguments: ['@entity_field.manager', '@entity_display.repository']
+
+  article_importer.csv_processor:
+    class: Drupal\article_importer\Plugin\CsvProcessor
+    arguments: ['@config.factory', '@entity_type.manager']

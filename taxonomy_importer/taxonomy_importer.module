@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * Implements hook_help().
+ * Provides help text for your module on the module overview page.
+ */
+function taxonomy_importer_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.taxonomy_importer':
+      return '<p>' . t('This module allows importing taxonomy terms and their translations from a CSV file.') . '</p>';
+  }
+}

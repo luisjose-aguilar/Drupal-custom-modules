@@ -1,0 +1,7 @@
+article_importer.import:
+  path: '/admin/config/development/article-importer'
+  defaults:
+    _form: '\Drupal\article_importer\Form\ImportForm'
+    _title: 'Import Articles'
+  requirements:
+    _permission: 'administer site configuration'

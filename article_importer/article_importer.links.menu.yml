@@ -1,0 +1,6 @@
+article_importer.import:
+  title: 'Import Retail Articles'
+  description: 'Import articles from a CSV file.'
+  parent: system.admin_config_development
+  route_name: article_importer.import
+  weight: 0

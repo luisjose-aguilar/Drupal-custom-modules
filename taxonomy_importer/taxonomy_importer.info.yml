@@ -1,0 +1,8 @@
+name: 'Taxonomy Importer'
+type: module
+description: 'A module to import taxonomy terms and their translations.'
+core_version_requirement: ^9
+package: Custom
+dependencies:
+  - taxonomy
+version: 1.0

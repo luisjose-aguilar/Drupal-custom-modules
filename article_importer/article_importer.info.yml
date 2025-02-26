@@ -1,0 +1,6 @@
+name: 'Article Importer'
+type: module
+core_version_requirement: ^9
+description: 'A module for importing articles from a CSV file with dynamic field mapping.'
+dependencies:
+  - drupal:node

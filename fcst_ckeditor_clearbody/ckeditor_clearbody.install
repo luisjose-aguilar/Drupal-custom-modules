@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Check requirements for the CKEditor Clear Body module.
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function ckeditor_clearbody_requirements($phase) {
+  $requirements = [];
+
+  if ($phase == 'install' || $phase == 'runtime') {
+    $plugin_detected = file_exists(DRUPAL_ROOT . '/libraries/clearbody/plugin.js');
+
+    if ($plugin_detected) {
+      $requirements['clearbody'] = [
+        'title' => t('CKEditor Clear Body'),
+        'value' => t('Plugin detected'),
+        'severity' => REQUIREMENT_OK,
+      ];
+    }
+    else {
+      $requirements['clearbody'] = [
+        'title' => t('CKEditor Clear Body'),
+        'value' => t('Plugin not detected'),
+        'severity' => REQUIREMENT_ERROR,
+        'description' => t('Before you can use the CKEditor Clear Body module, you need to get the clearbody plugin '),
+      ];
+    }
+  }
+
+  return $requirements;
+}

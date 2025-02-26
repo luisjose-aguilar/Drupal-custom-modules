@@ -1,0 +1,10 @@
+name: CKEditor Clear Body
+type: module
+description: This plugin module adds the clear body feature to CKEditor in Drupal 8
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'
+core_version_requirement: ^8 || ^9
+project: 'ckeditor_clearbody'

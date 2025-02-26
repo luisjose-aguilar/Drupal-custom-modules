@@ -1,0 +1,15 @@
+taxonomy_importer.import_controller:
+  path: '/admin/structure/taxonomy/import'
+  defaults:
+    _controller: '\Drupal\taxonomy_importer\Controller\TaxonomyImportController::content'
+    _title: 'Import Taxonomy Terms and Translations'
+  requirements:
+    _permission: 'administer fcstone'
+    
+taxonomy_importer.import_form:
+  path: '/admin/config/development/import-taxonomy'
+  defaults:
+    _form: '\Drupal\taxonomy_importer\Form\TaxonomyImportForm'
+    _title: 'Import Taxonomy Terms and Translations'
+  requirements:
+     _permission: 'administer site configuration'

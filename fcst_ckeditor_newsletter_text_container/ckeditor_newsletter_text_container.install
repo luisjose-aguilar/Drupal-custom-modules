@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Check requirements for the CKEditor Newsletter Text Container module.
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function ckeditor_newsletter_text_container_requirements($phase) {
+  $requirements = [];
+
+  if ($phase == 'install' || $phase == 'runtime') {
+    $plugin_detected = file_exists(DRUPAL_ROOT . '/libraries/newsletter_text_container/plugin.js');
+
+    if ($plugin_detected) {
+      $requirements['newsletter_text_container'] = [
+        'title' => t('CKEditor Newsletter Text Container'),
+        'value' => t('Plugin detected'),
+        'severity' => REQUIREMENT_OK,
+      ];
+    }
+    else {
+      $requirements['newsletter_text_container'] = [
+        'title' => t('CKEditor Newsletter Text Container'),
+        'value' => t('Plugin not detected'),
+        'severity' => REQUIREMENT_ERROR,
+        'description' => t('Before you can use the CKEditor Newsletter Text Container module, you need to get the newsletter_text_container plugin.'),
+      ];
+    }
+  }
+
+  return $requirements;
+}

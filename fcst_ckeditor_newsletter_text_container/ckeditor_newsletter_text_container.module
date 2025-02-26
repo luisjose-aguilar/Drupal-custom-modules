@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Contains ckeditor_googlesearch.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function ckeditor_newsletter_text_container_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.ckeditor_newsletter_text_container':
+      $output = '';
+      $output .= '<h3>' . t('Ckeditor Newsletter Text Container') . '</h3>';
+      $output .= '<p>' . t('The module adds a Newsletter Text Container html button to the editor toolbar.') . '</p>';
+      $output .= '<h3>' . t('Uses') . '</h3>';
+      $output .= '<dl>';
+      $output .= '<dt>' . t('Settings') . '</dt>';
+      $output .= '<dd>' . t('In the <a href=":text-formats">text formats</a> that use ckeditor, move the Newsletter Text Container icon into the active toolbar.', [':text-formats' => \Drupal::url('filter.admin_overview')]) . '</dd>';
+      $output .= '</dl>';
+      return $output;
+
+    default:
+  }
+}
