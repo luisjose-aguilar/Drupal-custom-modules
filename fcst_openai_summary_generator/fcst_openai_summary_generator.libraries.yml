@@ -1,0 +1,4 @@
+generate_summary_button:
+  css:
+    theme:
+      css/generate-summary-button.css: {}

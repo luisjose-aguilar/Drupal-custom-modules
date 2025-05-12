@@ -1,0 +1,105 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function fcst_openai_summary_generator_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ('node_article_form' == $form_id || 'node_article_edit_form' == $form_id || 'node_article_quick_node_clone_form' == $form_id) {
+    if (isset($form['body']) && isset($form['field_openai_summary'])) {
+        // Wrap in AJAX wrapper for refresh
+        $form['field_openai_summary']['#prefix'] = '<div id="openai-summary-wrapper">';
+        $form['field_openai_summary']['#suffix'] = '</div>';
+
+        // Add the button under the value field
+        $form['field_openai_summary']['widget'][0]['generate_button'] = [
+          '#type' => 'button',
+          '#value' => t('Generate Summary'),
+          '#ajax' => [
+            'callback' => 'fcst_openai_summary_generator_generate_callback',
+            'wrapper' => 'openai-summary-wrapper',
+            'event' => 'click',
+            'effect' => 'fade',
+          ],
+          '#limit_validation_errors' => [],
+          '#weight' => 1, // Ensure it's after 'value'
+          '#attributes' => [
+            // THIS is where your CSS class must go
+            'class' => ['generate-summary-button'],
+  ],
+        ];
+
+        $form['#attached']['library'][] = 'fcst_openai_summary_generator/generate_summary_button';
+        //$form['field_openai_summary']['widget'][0]['value']['generate_button']['#attributes']['class'][] = 'generate-summary-button';
+    }
+  }
+}
+
+/**
+ * Dummy submit handler to make form_state available to AJAX.
+ */
+function fcst_openai_summary_generator_generate_submit(array &$form, FormStateInterface $form_state) {
+  // Required by Drupal to trigger proper form build for AJAX buttons.
+}
+
+/**
+ * AJAX callback to update the OpenAI Summary field.
+ */
+function fcst_openai_summary_generator_generate_callback(array &$form, FormStateInterface $form_state) {
+  $body = $form_state->getValue(['body', 0, 'value']);
+
+  if (!empty($body)) {
+    $summary = fcst_openai_summary_generator_generate_summary($body);
+    $summary = preg_replace('/^```html\s*|\s*```$/', '', trim($summary));
+
+    // Update form state and field value.
+    $form_state->setValue(['field_openai_summary', 0, 'value'], $summary);
+    $form['field_openai_summary']['widget'][0]['value']['#value'] = $summary;
+  }
+
+  // Return the entire field (wrapper) so CKEditor refreshes.
+  return $form['field_openai_summary'];
+}
+
+/**
+ * Calls the OpenAI API to generate a summary.
+ */
+function fcst_openai_summary_generator_generate_summary($body_text) {
+  $fcst_openai_settings = \Drupal::service('fcst_settings.settings');
+  $endpoint = $fcst_openai_settings->getOpenAISummarySetting('url');
+  $api_key = $fcst_openai_settings->getOpenAISummarySetting('api-key');
+  $request = $fcst_openai_settings->getOpenAISummarySetting('request');
+  $max_token = (int) ($fcst_openai_settings->getOpenAISummarySetting('max_token') ?? 200);
+  //$endpoint = 'https://ceng-nonprod-shared-openai.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-02-01';
+  //$api_key = 'f8ece8c1ddc845ec9343d6980453a497'; // Replace with secure storage later.
+
+  $body = [
+    'messages' => [
+      [
+        'role' => 'user',
+        'content' => $request. ' ' . $body_text,
+      ],
+    ],
+    'max_tokens' => $max_token,
+    'temperature' => 1.0,
+    'n' => 1,
+  ];
+
+  try {
+    $client = \Drupal::httpClient();
+    $response = $client->post($endpoint, [
+      'headers' => [
+        'Content-Type' => 'application/json',
+        'api-key' => $api_key,
+      ],
+      'body' => json_encode($body),
+    ]);
+    $data = json_decode($response->getBody(), TRUE);
+    return $data['choices'][0]['message']['content'] ?? 'No summary returned.';
+  }
+  catch (\Exception $e) {
+    \Drupal::logger('openai_summary')->error($e->getMessage());
+    return 'Error generating summary.';
+  }
+}

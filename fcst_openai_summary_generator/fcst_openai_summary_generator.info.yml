@@ -1,0 +1,7 @@
+name: FCST OpenAI Summary Generator
+type: module
+description: Adds a "Generate" button to summarize body content using OpenAI GPT-4o.
+core_version_requirement: ^9 || ^10
+package: Custom
+dependencies:
+  - drupal:node

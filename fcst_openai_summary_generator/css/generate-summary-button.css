@@ -1,0 +1,31 @@
+.generate-summary-button {
+    position: relative !important;
+    padding-left: 3em !important;
+    background: url(/docroot/modules/custom/fcst_openai_summary_generator/images/chatgpt-icon.svg) !important;
+    left: -0.6em !important;
+    margin-top: -1em !important;
+    background-repeat: no-repeat !important;
+    background-position: 0.4em center !important;
+    background-size: 2.2em 1.5em !important;
+    border-radius: 4px !important;
+    background-color: #d3d4d9 !important;
+}
+  
+  /* Hover state */
+  .generate-summary-button:hover {
+    background-color: #f5f5f5 !important;    /* light grey background on hover */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
+  }
+  
+  /* Active / pressed state */
+  .generate-summary-button:active {
+    transform: scale(0.98) !important;        /* slight “press” effect */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
+  }
+  
+  /* Focus outline (accessibility) */
+  .generate-summary-button:focus {
+    outline: 2px solid #007ACC !important;    /* blue outline when tab-focused */
+    outline-offset: 2px !important;
+  }
+  
